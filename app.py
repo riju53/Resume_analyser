@@ -149,9 +149,9 @@ Provide an objective and professional assessment.
 # ============================================================
 # Create Chain
 # ============================================================
-from langchain_core.output_parsers import StrOutputParser
-output = StrOutputParser()
-chain = prompt | structured_model | output
+# from langchain_core.output_parsers import StrOutputParser
+# output = StrOutputParser()
+chain = prompt | structured_model
 
 
 # ============================================================
