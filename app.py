@@ -157,7 +157,7 @@ chain = prompt | structured_model
 # File Upload
 # ============================================================
 
-uploaded_file = st.file_uploader(
+uploaded_file = st.sidebar.file_uploader(
     "📤 Upload your Resume",
     type=["pdf"],
     help="Upload your resume in PDF format."
@@ -170,11 +170,11 @@ uploaded_file = st.file_uploader(
 
 if uploaded_file is not None:
 
-    st.success(f"Uploaded: {uploaded_file.name}")
+    st.sidebar.success(f"Uploaded: {uploaded_file.name}")
 
-    if st.button("🔍 Analyze Resume", use_container_width=True):
+    if st.sidebar.button("🔍 Analyze Resume", use_container_width=True):
 
-        with st.spinner("Analyzing your resume..."):
+        with st.sidebar.spinner("Analyzing your resume..."):
 
             try:
 
