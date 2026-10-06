@@ -1,4 +1,3 @@
-```python
 import os
 import tempfile
 import streamlit as st
@@ -348,4 +347,3 @@ if uploaded_file is not None:
                 st.error(
                     f"❌ Something went wrong: {str(e)}"
                 )
-```
