@@ -6,9 +6,7 @@ from langchain_community.document_loaders import PyPDFLoader
 
 
 
-# ============================================================
 # Page Configuration
-# ============================================================
 
 st.set_page_config(
     page_title="AI Resume Analyzer",
@@ -17,9 +15,7 @@ st.set_page_config(
 )
 
 
-# ============================================================
 # Custom CSS
-# ============================================================
 
 st.markdown("""
 <style>
@@ -46,9 +42,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# ============================================================
 # Title
-# ============================================================
 
 st.markdown(
     '<div class="main-title">📄 AI Resume Analyzer</div>',
