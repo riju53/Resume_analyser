@@ -69,21 +69,12 @@ st.markdown(
 # API Key
 # ============================================================
 
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-
-if not GROQ_API_KEY:
-    st.error("⚠️ GROQ_API_KEY environment variable is not set.")
-    st.stop()
-
-
-# ============================================================
-# Groq Model
-# ============================================================
-
+groq_api_key = st.secrets["GROQ_API_KEY"]
 model = ChatGroq(
     model="openai/gpt-oss-120b",
-    groq_api_key=GROQ_API_KEY,
+    api_key=groq_api_key
 )
+
 
 
 # ============================================================
