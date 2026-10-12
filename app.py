@@ -421,216 +421,122 @@ if "analysis_result" in st.session_state:
 
     result = st.session_state["analysis_result"]
 
-    # Keep your existing display code here:
-    # Candidate Summary
-    # Skills
-    # Education
-    # Experience
-    # Projects
-    # Missing Skills
-    # Suitable Job Roles
-    # Overall Employability
-    # Salary Prediction
-    # HR Recommendation
-
-                # # Display Results
-
-                # st.markdown(
-                #     '<div class="section-title">👤 Candidate Summary</div>',
-                #     unsafe_allow_html=True
-                # )
-
-                # st.info(result["summary"])
 
 
-                # # Skills
-
-                # st.markdown(
-                #     '<div class="section-title">🛠️ Skills</div>',
-                #     unsafe_allow_html=True
-                # )
-
-                # cols = st.columns(3)
-
-                # for i, skill in enumerate(result["skills"]):
-
-                #     with cols[i % 3]:
-                #         st.success(f"✓ {skill}")
-
-
-                # # Education
-
-                # st.markdown(
-                #     '<div class="section-title">🎓 Education</div>',
-                #     unsafe_allow_html=True
-                # )
-
-                # for education in result["education"]:
-                #     st.write(f"• {education}")
-
-
-                # # Experience
-
-                # st.markdown(
-                #     '<div class="section-title">💼 Experience</div>',
-                #     unsafe_allow_html=True
-                # )
-
-                # for experience in result["experience"]:
-                #     st.write(f"• {experience}")
-
-
-                # # Projects
-
-                # st.markdown(
-                #     '<div class="section-title">🚀 Projects</div>',
-                #     unsafe_allow_html=True
-                # )
-
-                # for project in result["projects"]:
-                #     st.write(f"• {project}")
-
-
-                # # Missing Skills
-
-                # st.markdown(
-                #     '<div class="section-title">⚠️ Missing / Weak Skills</div>',
-                #     unsafe_allow_html=True
-                # )
-
-                # if result["missing_skills"]:
-
-                #     for skill in result["missing_skills"]:
-                #         st.warning(skill)
-
-                # else:
-
-                #     st.success("No major missing skills identified.")
-
-
-                # # Recommendation
-
-                # st.markdown(
-                #     '<div class="section-title">💡 HR Recommendation</div>',
-                #     unsafe_allow_html=True
-                # )
-
-                # st.info(result["recommendation"])
-
+        st.markdown(
+            '<div class="section-title">👤 Candidate Summary</div>',
+            unsafe_allow_html=True
+        )
+        st.info(result["summary"])
+        
+            
+            # Skills
             st.markdown(
-                '<div class="section-title">👤 Candidate Summary</div>',
+                '<div class="section-title">🛠️ Technical & Soft Skills</div>',
                 unsafe_allow_html=True
             )
-            st.info(result["summary"])
-                
-                
-                # Skills
-                st.markdown(
-                    '<div class="section-title">🛠️ Technical & Soft Skills</div>',
-                    unsafe_allow_html=True
-                )
-                
-                cols = st.columns(3)
-                
-                for i, skill in enumerate(result["skills"]):
-                    with cols[i % 3]:
-                        st.success(f"✓ {skill}")
-                
-                
-                # Education
-                st.markdown(
-                    '<div class="section-title">🎓 Education</div>',
-                    unsafe_allow_html=True
-                )
-                
-                for education in result["education"]:
-                    st.write(f"• {education}")
-                
-                
-                # Experience
-                st.markdown(
-                    '<div class="section-title">💼 Work Experience</div>',
-                    unsafe_allow_html=True
-                )
-                
-                for experience in result["experience"]:
-                    st.write(f"• {experience}")
-                
-                
-                # Projects
-                st.markdown(
-                    '<div class="section-title">🚀 Projects</div>',
-                    unsafe_allow_html=True
-                )
-                
-                for project in result["projects"]:
-                    st.write(f"• {project}")
-                
-                
-                # Missing Skills
-                st.markdown(
-                    '<div class="section-title">⚠️ Missing / Weak Skills</div>',
-                    unsafe_allow_html=True
-                )
-                
-                if result["missing_skills"]:
-                    for skill in result["missing_skills"]:
-                        st.warning(skill)
-                else:
-                    st.success("No major missing skills identified.")
-                
-                
-                # Suitable Job Roles
-                st.markdown(
-                    '<div class="section-title">🎯 Suitable Job Roles</div>',
-                    unsafe_allow_html=True
-                )
-                
-                for role in result["suitable_roles"]:
-                    st.write(f"• {role}")
-                
-                
-                # Overall Employability
-                st.markdown(
-                    '<div class="section-title">📊 Overall Employability</div>',
-                    unsafe_allow_html=True
-                )
-                
-                st.info(result["employability"])
-                
-                
-                # Salary Prediction
-                st.markdown(
-                    '<div class="section-title">💰 Estimated Salary Prediction</div>',
-                    unsafe_allow_html=True
-                )
-                
-                st.caption(
-                    "Estimated Indian job-market compensation based on the resume. "
-                    "These figures are not guaranteed offers."
-                )
-                
-                for prediction in result["salary_prediction"]:
-                    st.write(f"• {prediction}")
-                
-                
-                # HR Recommendation
-                st.markdown(
-                    '<div class="section-title">💡 HR Recommendation</div>',
-                    unsafe_allow_html=True
-                )
-                
-                st.info(result["recommendation"])
+            
+            cols = st.columns(3)
+            
+            for i, skill in enumerate(result["skills"]):
+                with cols[i % 3]:
+                    st.success(f"✓ {skill}")
+            
+            
+            # Education
+            st.markdown(
+                '<div class="section-title">🎓 Education</div>',
+                unsafe_allow_html=True
+            )
+            
+            for education in result["education"]:
+                st.write(f"• {education}")
+            
+            
+            # Experience
+            st.markdown(
+                '<div class="section-title">💼 Work Experience</div>',
+                unsafe_allow_html=True
+            )
+            
+            for experience in result["experience"]:
+                st.write(f"• {experience}")
+            
+            
+            # Projects
+            st.markdown(
+                '<div class="section-title">🚀 Projects</div>',
+                unsafe_allow_html=True
+            )
+            
+            for project in result["projects"]:
+                st.write(f"• {project}")
+            
+            
+            # Missing Skills
+            st.markdown(
+                '<div class="section-title">⚠️ Missing / Weak Skills</div>',
+                unsafe_allow_html=True
+            )
+            
+            if result["missing_skills"]:
+                for skill in result["missing_skills"]:
+                    st.warning(skill)
+            else:
+                st.success("No major missing skills identified.")
+            
+            
+            # Suitable Job Roles
+            st.markdown(
+                '<div class="section-title">🎯 Suitable Job Roles</div>',
+                unsafe_allow_html=True
+            )
+            
+            for role in result["suitable_roles"]:
+                st.write(f"• {role}")
+            
+            
+            # Overall Employability
+            st.markdown(
+                '<div class="section-title">📊 Overall Employability</div>',
+                unsafe_allow_html=True
+            )
+            
+            st.info(result["employability"])
+            
+            
+            # Salary Prediction
+            st.markdown(
+                '<div class="section-title">💰 Estimated Salary Prediction</div>',
+                unsafe_allow_html=True
+            )
+            
+            st.caption(
+                "Estimated Indian job-market compensation based on the resume. "
+                "These figures are not guaranteed offers."
+            )
+            
+            for prediction in result["salary_prediction"]:
+                st.write(f"• {prediction}")
+            
+            
+            # HR Recommendation
+            st.markdown(
+                '<div class="section-title">💡 HR Recommendation</div>',
+                unsafe_allow_html=True
+            )
+            
+            st.info(result["recommendation"])
 
-                # Success
+            # Success
 
-                st.success(
-                    "✅ Resume analysis completed successfully!"
-                )
+            st.success(
+                "✅ Resume analysis completed successfully!"
+            )
 
 
-            except Exception as e:
+        except Exception as e:
 
-                st.error(
-                    f"❌ Something went wrong: {str(e)}"
-                )
+            st.error(
+                f"❌ Something went wrong: {str(e)}"
+            )
