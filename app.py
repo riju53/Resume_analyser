@@ -505,18 +505,34 @@ if "analysis_result" in st.session_state:
     st.info(result["employability"])
 
     # Salary Prediction
+
+# Salary Prediction
     st.markdown(
         '<div class="section-title">💰 Estimated Salary Prediction</div>',
         unsafe_allow_html=True
     )
-
+    
     st.caption(
         "Estimated Indian job-market compensation based on the resume. "
         "These figures are estimates, not guaranteed offers."
     )
+    
+    salary_data = result.get("salary_prediction", [])
+    
+    if isinstance(salary_data, str):
+        # Convert a multiline string into a list of lines
+        salary_data = [
+            line.strip()
+            for line in salary_data.splitlines()
+            if line.strip()
+        ]
+    
+    if isinstance(salary_data, list):
+        for prediction in salary_data:
+            st.markdown(f"- {prediction}")
+    else:
+        st.info("Salary prediction is not available.")
 
-    for prediction in result["salary_prediction"]:
-        st.write(f"• {prediction}")
 
     # HR Recommendation
     st.markdown(
