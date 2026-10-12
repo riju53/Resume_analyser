@@ -63,7 +63,7 @@ from langchain_groq import ChatGroq
 
 llm = ChatGroq(
     model="openai/gpt-oss-120b",
-    groq_api_key=GROQ_API_KEY,
+    api_key=GROQ_API_KEY,
     temperature=0
 )
 
