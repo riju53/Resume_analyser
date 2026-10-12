@@ -2,10 +2,7 @@ import os
 import tempfile
 import streamlit as st
 
-from typing import TypedDict, List
-from langchain_groq import ChatGroq
-from langchain_core.prompts import PromptTemplate
-from langchain_community.document_loaders import PyPDFLoader
+
 
 
 # ============================================================
@@ -65,9 +62,8 @@ st.markdown(
 )
 
 
-# ============================================================
-# API Key
-# ============================================================
+# Model Creation
+from langchain_groq import ChatGroq
 
 groq_api_key = st.secrets["GROQ_API_KEY"]
 model = ChatGroq(
@@ -77,9 +73,8 @@ model = ChatGroq(
 
 
 
-# ============================================================
 # Structured Output
-# ============================================================
+from typing import TypedDict, List
 
 class Analyzer(TypedDict):
     summary: str
@@ -94,9 +89,9 @@ class Analyzer(TypedDict):
 structured_model = model.with_structured_output(Analyzer)
 
 
-# ============================================================
 # Prompt
-# ============================================================
+from langchain_core.prompts import PromptTemplate
+
 
 prompt = PromptTemplate(
     template="""
@@ -137,17 +132,13 @@ Provide an objective and professional assessment.
 )
 
 
-# ============================================================
 # Create Chain
-# ============================================================
 # from langchain_core.output_parsers import StrOutputParser
 # output = StrOutputParser()
 chain = prompt | structured_model
 
 
-# ============================================================
 # File Upload
-# ============================================================
 
 uploaded_file = st.sidebar.file_uploader(
     "📤 Upload your Resume",
@@ -156,9 +147,7 @@ uploaded_file = st.sidebar.file_uploader(
 )
 
 
-# ============================================================
 # Analyze Button
-# ============================================================
 
 if uploaded_file is not None:
 
@@ -170,9 +159,7 @@ if uploaded_file is not None:
 
             try:
 
-                # ------------------------------------------------
                 # Save uploaded PDF temporarily
-                # ------------------------------------------------
 
                 with tempfile.NamedTemporaryFile(
                     delete=False,
@@ -184,18 +171,14 @@ if uploaded_file is not None:
                     temp_pdf_path = temp_file.name
 
 
-                # ------------------------------------------------
                 # Load PDF
-                # ------------------------------------------------
 
                 loader = PyPDFLoader(temp_pdf_path)
 
                 documents = loader.load()
 
 
-                # ------------------------------------------------
                 # Extract text
-                # ------------------------------------------------
 
                 resume_text = "\n".join(
                     doc.page_content
@@ -203,9 +186,7 @@ if uploaded_file is not None:
                 )
 
 
-                # ------------------------------------------------
                 # Check PDF text
-                # ------------------------------------------------
 
                 if not resume_text.strip():
 
@@ -217,18 +198,14 @@ if uploaded_file is not None:
                     st.stop()
 
 
-                # ------------------------------------------------
                 # Invoke LangChain chain
-                # ------------------------------------------------
 
                 result = chain.invoke({
                     "resume": resume_text
                 })
 
 
-                # ------------------------------------------------
                 # Display Results
-                # ------------------------------------------------
 
                 st.markdown(
                     '<div class="section-title">👤 Candidate Summary</div>',
@@ -238,9 +215,7 @@ if uploaded_file is not None:
                 st.info(result["summary"])
 
 
-                # ------------------------------------------------
                 # Skills
-                # ------------------------------------------------
 
                 st.markdown(
                     '<div class="section-title">🛠️ Skills</div>',
@@ -255,9 +230,7 @@ if uploaded_file is not None:
                         st.success(f"✓ {skill}")
 
 
-                # ------------------------------------------------
                 # Education
-                # ------------------------------------------------
 
                 st.markdown(
                     '<div class="section-title">🎓 Education</div>',
@@ -268,9 +241,7 @@ if uploaded_file is not None:
                     st.write(f"• {education}")
 
 
-                # ------------------------------------------------
                 # Experience
-                # ------------------------------------------------
 
                 st.markdown(
                     '<div class="section-title">💼 Experience</div>',
@@ -281,9 +252,7 @@ if uploaded_file is not None:
                     st.write(f"• {experience}")
 
 
-                # ------------------------------------------------
                 # Projects
-                # ------------------------------------------------
 
                 st.markdown(
                     '<div class="section-title">🚀 Projects</div>',
@@ -294,9 +263,7 @@ if uploaded_file is not None:
                     st.write(f"• {project}")
 
 
-                # ------------------------------------------------
                 # Missing Skills
-                # ------------------------------------------------
 
                 st.markdown(
                     '<div class="section-title">⚠️ Missing / Weak Skills</div>',
@@ -313,9 +280,7 @@ if uploaded_file is not None:
                     st.success("No major missing skills identified.")
 
 
-                # ------------------------------------------------
                 # Recommendation
-                # ------------------------------------------------
 
                 st.markdown(
                     '<div class="section-title">💡 HR Recommendation</div>',
@@ -325,9 +290,7 @@ if uploaded_file is not None:
                 st.info(result["recommendation"])
 
 
-                # ------------------------------------------------
                 # Success
-                # ------------------------------------------------
 
                 st.success(
                     "✅ Resume analysis completed successfully!"
