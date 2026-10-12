@@ -2,9 +2,8 @@ import os
 import tempfile
 import streamlit as st
 from langchain_community.document_loaders import PyPDFLoader
-
-
-
+import json
+import tempfile
 
 # Page Configuration
 
@@ -58,12 +57,18 @@ st.markdown(
 
 
 # Model Creation
+import json
+import streamlit as st
 from langchain_groq import ChatGroq
 
-groq_api_key = st.secrets["GROQ_API_KEY"]
-model = ChatGroq(
+llm = ChatGroq(
     model="openai/gpt-oss-120b",
-    api_key=groq_api_key
+    groq_api_key=GROQ_API_KEY,
+    temperature=0
+)
+
+json_llm = llm.bind(
+    response_format={"type": "json_object"}
 )
 
 
@@ -86,7 +91,7 @@ class Analyzer(TypedDict):
     recommendation: str
 
 
-structured_model = model.with_structured_output(Analyzer)
+#structured_model = model.with_structured_output(Analyzer)
 
 
 # Prompt
@@ -280,6 +285,22 @@ General Instructions:
 - Base all conclusions on the supplied resume.
 - Never guarantee employment or a particular salary.
 
+OUTPUT FORMAT REQUIREMENTS:
+
+Return a valid JSON object only.
+Do not return Markdown tables, headings, or text outside JSON.
+
+Include exactly these keys:
+summary, skills, education, experience, projects,
+missing_skills, suitable_roles, employability,
+salary_prediction, recommendation.
+
+Use strings for summary, employability, and recommendation.
+Use arrays of strings for all other fields.
+
+Salary predictions must be estimates, not guaranteed offers.
+Do not invent candidate qualifications or achievements.
+
 Return a detailed, structured resume analysis.
 """,
     input_variables=["resume"]
@@ -290,11 +311,11 @@ Return a detailed, structured resume analysis.
 # Create Chain
 # from langchain_core.output_parsers import StrOutputParser
 # output = StrOutputParser()
-chain = prompt | structured_model
+
+chain = prompt | json_llm
 
 
 # File Upload
-
 uploaded_file = st.sidebar.file_uploader(
     "📤 Upload your Resume",
     type=["pdf"],
@@ -303,62 +324,114 @@ uploaded_file = st.sidebar.file_uploader(
 
 
 # Analyze Button
-
 if uploaded_file is not None:
 
     st.sidebar.success(f"Uploaded: {uploaded_file.name}")
 
-    if st.sidebar.button("🔍 Analyze Resume", use_container_width=True):
+    if st.sidebar.button(
+        "🔍 Analyze Resume",
+        use_container_width=True
+    ):
+
+        temp_pdf_path = None
 
         with st.sidebar.spinner("Analyzing your resume..."):
 
             try:
-
                 # Save uploaded PDF temporarily
-
                 with tempfile.NamedTemporaryFile(
                     delete=False,
                     suffix=".pdf"
                 ) as temp_file:
 
                     temp_file.write(uploaded_file.getbuffer())
-
                     temp_pdf_path = temp_file.name
 
-
                 # Load PDF
-
                 loader = PyPDFLoader(temp_pdf_path)
-
                 documents = loader.load()
 
-
                 # Extract text
-
                 resume_text = "\n".join(
-                    doc.page_content
-                    for doc in documents
+                    doc.page_content for doc in documents
                 )
 
-
-                # Check PDF text
-
                 if not resume_text.strip():
-
                     st.error(
-                        "❌ Could not extract text from this PDF. "
+                        "Could not extract text from this PDF. "
                         "Please upload a text-based PDF."
                     )
-
                     st.stop()
 
-
                 # Invoke LangChain chain
-
-                result = chain.invoke({
+                response = chain.invoke({
                     "resume": resume_text
                 })
 
+                # Convert JSON text into a Python dictionary
+                result = json.loads(response.content)
+
+                # Validate required fields
+                required_keys = [
+                    "summary",
+                    "skills",
+                    "education",
+                    "experience",
+                    "projects",
+                    "missing_skills",
+                    "suitable_roles",
+                    "employability",
+                    "salary_prediction",
+                    "recommendation"
+                ]
+
+                missing_keys = [
+                    key for key in required_keys
+                    if key not in result
+                ]
+
+                if missing_keys:
+                    st.error(
+                        f"Model output is missing fields: {missing_keys}"
+                    )
+                    st.stop()
+
+                # Store results for your existing display section
+                st.session_state["analysis_result"] = result
+
+                st.success("Resume analysis completed!")
+
+            except json.JSONDecodeError:
+                st.error(
+                    "The model did not return valid JSON. "
+                    "Please try again."
+                )
+
+            except Exception as e:
+                st.error(f"Something went wrong: {e}")
+
+            finally:
+                # Remove temporary PDF
+                if temp_pdf_path and os.path.exists(temp_pdf_path):
+                    os.remove(temp_pdf_path)
+
+
+# Display results outside the Analyze button block
+if "analysis_result" in st.session_state:
+
+    result = st.session_state["analysis_result"]
+
+    # Keep your existing display code here:
+    # Candidate Summary
+    # Skills
+    # Education
+    # Experience
+    # Projects
+    # Missing Skills
+    # Suitable Job Roles
+    # Overall Employability
+    # Salary Prediction
+    # HR Recommendation
 
                 # # Display Results
 
