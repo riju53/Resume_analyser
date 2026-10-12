@@ -517,11 +517,11 @@ if "analysis_result" in st.session_state:
 
                 # st.info(result["recommendation"])
 
-                st.markdown(
-                    '<div class="section-title">👤 Candidate Summary</div>',
-                    unsafe_allow_html=True
-                )
-                st.info(result["summary"])
+            st.markdown(
+                '<div class="section-title">👤 Candidate Summary</div>',
+                unsafe_allow_html=True
+            )
+            st.info(result["summary"])
                 
                 
                 # Skills
