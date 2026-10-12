@@ -60,10 +60,10 @@ st.markdown(
 import json
 import streamlit as st
 from langchain_groq import ChatGroq
-api_key = st.secrets["GROQ_API_KEY"]
+groq_api_key = st.secrets["GROQ_API_KEY"]
 llm = ChatGroq(
     model="openai/gpt-oss-120b",
-    api_key=GROQ_API_KEY,
+    api_key=groq_api_key,
     temperature=0
 )
 
